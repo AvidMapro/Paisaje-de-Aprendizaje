@@ -1,11 +1,11 @@
 :root {
     --term-color: #00ff00;
     --bg-color: #051405;
-    --font-main: 'Courier New', Courier, monospace;
+    /* Aplicamos la nueva fuente retro VT323 */
+    --font-main: 'VT323', 'Courier New', Courier, monospace;
 }
 
 body {
-    background-color: #000;
     color: var(--term-color);
     font-family: var(--font-main);
     margin: 0;
@@ -13,6 +13,11 @@ body {
     display: flex;
     height: 100vh;
     transition: background-color 1s ease;
+    
+    /* Fondo del escenario (Nave) */
+    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.85)), 
+                url('../img/puente.jpg') no-repeat center center fixed;
+    background-size: cover;
 }
 
 /* Efecto Pantalla Antigua */
@@ -36,11 +41,11 @@ body {
     gap: 15px;
     border-right: 1px solid rgba(0, 255, 0, 0.3);
     z-index: 5;
+    font-size: 1.2rem; /* Más grande para la fuente VT323 */
 }
 
 .node {
     opacity: 0.3;
-    font-size: 0.8rem;
     transition: all 0.5s;
 }
 
@@ -55,19 +60,54 @@ body {
     text-decoration: line-through;
 }
 
-/* Contenedor Principal con Transición de Fade */
+/* --- ANIMACIÓN DE ENCENDIDO --- */
+@keyframes turn-on {
+    0% { transform: scale(1, 0.01) translate3d(0, 0, 0); filter: brightness(30); opacity: 0; }
+    50% { transform: scale(1, 1) translate3d(0, 0, 0); filter: brightness(5); opacity: 1; }
+    100% { filter: brightness(1); }
+}
+
+/* Contenedor Principal con Transición y Efecto Vidrio */
 .terminal-container {
     flex-grow: 1;
-    margin: 20px;
-    background-color: var(--bg-color);
-    border: 1px solid var(--term-color);
+    margin: 20px auto;
+    max-width: 1000px; /* Evita que ocupe toda la pantalla para ver el fondo */
+    background-color: rgba(5, 20, 5, 0.85); /* Fondo semitransparente */
+    backdrop-filter: blur(4px); /* Difumina lo que hay detrás */
+    border: 2px solid var(--term-color);
     padding: 30px;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 15px var(--term-color);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.9), 0 0 15px var(--term-color);
     display: flex;
     flex-direction: column;
     transition: opacity 0.8s ease, transform 0.8s ease, border-color 0.5s, box-shadow 0.5s;
-    opacity: 1;
-    transform: scale(1);
+    
+    /* Iniciar animación de encendido */
+    animation: turn-on 0.6s ease-out;
+}
+
+/* --- ÁREA DEL PERSONAJE (IA MADRE) --- */
+.character-area {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed var(--term-color);
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+.avatar-madre img {
+    width: 60px;
+    height: 60px;
+    border: 1px solid var(--term-color);
+    object-fit: cover;
+    box-shadow: 0 0 10px var(--term-color);
+}
+
+.status-indicators {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 /* Clase para ocultar el nodo (transición) */
@@ -79,20 +119,21 @@ body {
 .header {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid var(--term-color);
+    border-bottom: 2px solid var(--term-color);
     padding-bottom: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     letter-spacing: 2px;
+    font-size: 1.4rem;
 }
 
 .screen {
     flex-grow: 1;
     overflow-y: auto;
     white-space: pre-wrap;
-    line-height: 1.6;
+    line-height: 1.4;
     margin-bottom: 20px;
-    text-shadow: 0 0 3px var(--term-color);
-    font-size: 1.1rem;
+    text-shadow: 0 0 4px var(--term-color);
+    font-size: 1.3rem; /* Ajustado para VT323 */
 }
 
 .controls {
@@ -108,6 +149,7 @@ button {
     border: 1px solid var(--term-color);
     padding: 12px 20px;
     font-family: var(--font-main);
+    font-size: 1.2rem;
     cursor: pointer;
     text-transform: uppercase;
     text-align: left;
@@ -120,10 +162,20 @@ button:hover {
     box-shadow: 0 0 10px var(--term-color);
 }
 
-/* Animación de daño (Shake) */
+/* Animaciones y Efectos */
+.blink { animation: blinker 1s linear infinite; }
+@keyframes blinker { 50% { opacity: 0; } }
+
+.alerta-roja {
+    color: #ff3333;
+    animation: blinker 0.4s step-start infinite;
+    text-shadow: 0 0 8px #ff0000;
+}
+
 .damage-shake {
     animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
     border-color: red !important;
+    box-shadow: inset 0 0 40px rgba(255,0,0,0.5), 0 0 20px red !important;
 }
 
 @keyframes shake {
@@ -153,16 +205,25 @@ button:hover {
     padding: 30px;
     overflow-y: auto;
     box-shadow: 0 0 30px var(--term-color);
+    font-size: 1.2rem;
 }
 
-.btn-close {
-    margin-top: 20px;
-    width: 100%;
-    text-align: center;
-}
+.btn-close { margin-top: 20px; width: 100%; text-align: center; }
 
 /* Variables de Entorno (Temas) */
 .theme-bridge { --term-color: #00ff00; --bg-color: #051405; }
 .theme-lab { --term-color: #ffb000; --bg-color: #1a1100; }
 .theme-comms { --term-color: #00e5ff; --bg-color: #00121a; }
 .theme-engine { --term-color: #ff0000; --bg-color: #1a0000; }
+
+/* --- ANIMACIÓN INTERACTIVA DEL AVATAR --- */
+@keyframes madre-hablando {
+    0% { box-shadow: 0 0 5px var(--term-color); filter: brightness(1); }
+    50% { box-shadow: 0 0 25px var(--term-color); filter: brightness(1.8); }
+    100% { box-shadow: 0 0 5px var(--term-color); filter: brightness(1); }
+}
+
+.is-talking {
+    animation: madre-hablando 0.15s infinite;
+    border: 2px solid #fff !important; /* El borde se vuelve blanco al hablar */
+}

@@ -28,11 +28,16 @@ const scriptData = {
 };
 
 // --- MOTOR DE MÁQUINA DE ESCRIBIR ---
+// --- MOTOR DE MÁQUINA DE ESCRIBIR (ACTUALIZADO CON ANIMACIÓN) ---
 function typeWriter(text, callback) {
     screenEl.innerHTML = '';
     controlsEl.innerHTML = ''; 
     let i = 0;
     const formattedText = text.replace(/\n/g, '<br>');
+    
+    // Seleccionamos la imagen del avatar y le añadimos la clase de animación
+    const avatarImg = document.querySelector('.avatar-madre img');
+    if(avatarImg) avatarImg.classList.add('is-talking');
     
     function type() {
         if (i < formattedText.length) {
@@ -45,8 +50,10 @@ function typeWriter(text, callback) {
             }
             screenEl.scrollTop = screenEl.scrollHeight;
             setTimeout(type, typeSpeed);
-        } else if (callback) {
-            callback();
+        } else {
+            // Cuando termina el texto, quitamos la animación
+            if(avatarImg) avatarImg.classList.remove('is-talking');
+            if (callback) callback();
         }
     }
     type();

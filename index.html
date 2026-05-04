@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>USCSS Nostromo - Terminal</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- Fuente Retro de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <!-- Ruta actualizada al CSS en la carpeta assets -->
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="crt crt-glitch">
 
@@ -24,6 +27,18 @@
             <span id="oxygen-meter">O2: 100%</span>
         </div>
         
+        <!-- NUEVO: Área del Personaje (IA MADRE) -->
+        <div class="character-area">
+            <div class="avatar-madre">
+                <!-- Imagen temporal, la cambiaremos luego -->
+                <img src="assets/img/mother_interface.gif" alt="MADRE_IA" onerror="this.style.display='none'">
+            </div>
+            <div class="status-indicators">
+                <p style="margin: 0;">SISTEMA: <span class="blink">ACTIVO</span></p>
+                <p style="margin: 0; color: #aaa;">BIO-SCAN: <span class="alerta-roja">CUARENTENA ROTA</span></p>
+            </div>
+        </div>
+        
         <!-- Aquí se inyecta el texto como máquina de escribir -->
         <div id="screen" class="screen"></div>
         
@@ -40,6 +55,7 @@
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <!-- Ruta actualizada al JS en la carpeta assets -->
+    <script src="assets/js/app.js"></script>
 </body>
 </html>
