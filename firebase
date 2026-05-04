@@ -1,1 +1,3 @@
-firebase init hosting:github
+git add .
+git commit -m "Configurar despliegue automático con Firebase Hosting y GitHub"
+git push origin main
