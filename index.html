@@ -1,66 +1,303 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USCSS Nostromo - Terminal</title>
-    <!-- Fuente Retro de Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-    <!-- Ruta actualizada al CSS en la carpeta assets -->
-    <link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USCSS Nostromo — Paisaje de Aprendizaje</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="crt crt-glitch">
+<body>
 
-    <!-- Indicador de Nodos (Progreso) -->
-    <div id="node-tracker">
-        <div class="node active" id="node-0">00: INICIO</div>
-        <div class="node" id="node-1">01: PUENTE</div>
-        <div class="node" id="node-2">02: LAB</div>
-        <div class="node" id="node-3">03: COMMS</div>
-        <div class="node" id="node-4">04: MOTORES</div>
+  <!-- ═══ ESCENA 0: BOOT ═══ -->
+  <div id="scene-boot" class="scene active">
+    <div class="scanlines-global"></div>
+    <div class="boot-container">
+      <div class="boot-logo">
+        <div class="weyland-logo">▲ WEYLAND-YUTANI CORP</div>
+        <div class="weyland-sub">Building Better Worlds™</div>
+      </div>
+      <div id="boot-text" class="boot-text"></div>
+      <button id="boot-btn" class="btn-boot hidden" onclick="goToMap()">
+        [ PRESIONA ENTER PARA INICIAR EL RESCATE DEL SISTEMA ]
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ ESCENA 1: MAPA ═══ -->
+  <div id="scene-map" class="scene">
+    <div class="scanlines-global"></div>
+
+    <div class="hud-top">
+      <div class="hud-section">
+        <span class="hud-label">NAVE</span>
+        <span class="hud-value blink-slow">USCSS NOSTROMO</span>
+      </div>
+      <div class="hud-section hud-center">
+        <span class="hud-label">SOPORTE VITAL — O₂</span>
+        <div class="o2-bar-wrap"><div id="map-o2-bar" class="o2-bar"></div></div>
+        <span id="map-o2-pct" class="hud-value o2-pct">100%</span>
+      </div>
+      <div class="hud-section">
+        <span class="hud-label">FECHA ESTELAR</span>
+        <span class="hud-value">2122.06.03</span>
+      </div>
     </div>
 
-    <!-- Terminal Principal -->
-    <div id="terminal" class="terminal-container theme-bridge">
-        <div class="header">
-            <span id="location-tag">INICIANDO CONEXIÓN...</span>
-            <span id="oxygen-meter">O2: 100%</span>
+    <div class="map-body">
+      <!-- Panel MADRE -->
+      <aside class="madre-side">
+        <div class="madre-avatar-wrap">
+          <img src="assets/img/mother_interface.gif" alt="MADRE" onerror="this.style.display='none'">
+          <div class="madre-placeholder" id="madre-avatar">MU/TH/UR<br>6000</div>
         </div>
-        
-        <!-- Área del Personaje (IA MADRE) -->
-        <div class="character-area">
-            <div class="avatar-madre">
-                <img src="assets/img/mother_interface.gif" alt="MADRE_IA" onerror="this.style.display='none'">
+        <div class="madre-speech-wrap">
+          <div class="madre-speech-label">▸ MADRE DICE:</div>
+          <div id="madre-speech" class="madre-speech">
+            > Sistema de emergencia activo.<br>
+            > Inicia por el Puente de Mando.<br>
+            > Las demás zonas están selladas<br>
+            > hasta completar cada módulo.
+          </div>
+        </div>
+      </aside>
+
+      <!-- Mapa central -->
+      <main class="ship-map">
+        <div class="map-title">— SELECCIONA UNA ZONA —</div>
+        <div class="zones-grid">
+
+          <button id="zone-bridge" class="zone-card theme-bridge" onclick="goToScene('bridge')">
+            <div class="zone-bg" style="background-image:url('assets/img/zones/bridge_thumb.jpg')"></div>
+            <div class="zone-overlay"></div>
+            <div class="zone-pulse"></div>
+            <div class="zone-content">
+              <div class="zone-num">01</div>
+              <div class="zone-name">PUENTE DE MANDO</div>
+              <div class="zone-topic">Windows Server + Active Directory</div>
+              <div id="badge-bridge" class="zone-badge available">▶ ACCEDER</div>
             </div>
-            <div class="status-indicators">
-                <p style="margin: 0;">SISTEMA: <span class="blink">ACTIVO</span></p>
-                <p style="margin: 0; color: #aaa;">BIO-SCAN: <span class="alerta-roja">CUARENTENA ROTA</span></p>
+            <span class="zone-corner tl"></span><span class="zone-corner tr"></span>
+            <span class="zone-corner bl"></span><span class="zone-corner br"></span>
+          </button>
+
+          <button id="zone-lab" class="zone-card theme-lab locked-zone" onclick="tryZone('lab')">
+            <div class="zone-bg" style="background-image:url('assets/img/zones/lab_thumb.jpg')"></div>
+            <div class="zone-overlay locked-overlay"></div>
+            <div class="zone-content">
+              <div class="zone-num">02</div>
+              <div class="zone-name">LABORATORIO CIENTÍFICO</div>
+              <div class="zone-topic">Linux Server + PostgreSQL</div>
+              <div id="badge-lab" class="zone-badge locked">🔒 BLOQUEADO</div>
             </div>
+            <span class="zone-corner tl"></span><span class="zone-corner tr"></span>
+            <span class="zone-corner bl"></span><span class="zone-corner br"></span>
+          </button>
+
+          <button id="zone-comms" class="zone-card theme-comms locked-zone" onclick="tryZone('comms')">
+            <div class="zone-bg" style="background-image:url('assets/img/zones/comms_thumb.jpg')"></div>
+            <div class="zone-overlay locked-overlay"></div>
+            <div class="zone-content">
+              <div class="zone-num">03</div>
+              <div class="zone-name">SALA DE COMUNICACIONES</div>
+              <div class="zone-topic">Servidores Web + Puertos + Firewall</div>
+              <div id="badge-comms" class="zone-badge locked">🔒 BLOQUEADO</div>
+            </div>
+            <span class="zone-corner tl"></span><span class="zone-corner tr"></span>
+            <span class="zone-corner bl"></span><span class="zone-corner br"></span>
+          </button>
+
+          <button id="zone-engines" class="zone-card theme-engines locked-zone" onclick="tryZone('engines')">
+            <div class="zone-bg" style="background-image:url('assets/img/zones/engines_thumb.jpg')"></div>
+            <div class="zone-overlay locked-overlay"></div>
+            <div class="zone-content">
+              <div class="zone-num">04</div>
+              <div class="zone-name">SALA DE MÁQUINAS</div>
+              <div class="zone-topic">Scripts Bash/PowerShell + Backups</div>
+              <div id="badge-engines" class="zone-badge locked">🔒 BLOQUEADO</div>
+            </div>
+            <span class="zone-corner tl"></span><span class="zone-corner tr"></span>
+            <span class="zone-corner bl"></span><span class="zone-corner br"></span>
+          </button>
+
         </div>
-        
-        <!-- NUEVO: Visor Analítico Central (Para proyectar los GIFs) -->
-        <div id="main-display" class="main-display hidden">
-            <div class="scanlines"></div>
-            <img id="display-img" src="" alt="Visor">
+      </main>
+
+      <!-- Panel de progreso -->
+      <aside class="progress-side">
+        <div class="progress-title">▸ PROGRESO</div>
+        <div class="progress-item" id="prog-bridge">
+          <span class="prog-dot"></span> 01 Puente
+          <span id="prog-bridge-status" class="prog-status">EN CURSO</span>
         </div>
-        
-        <!-- Aquí se inyecta el texto de Madre como máquina de escribir -->
-        <div id="screen" class="screen"></div>
-        
-        <!-- Botones de interacción -->
-        <div id="controls" class="controls"></div>
+        <div class="progress-item locked" id="prog-lab">
+          <span class="prog-dot"></span> 02 Laboratorio
+          <span id="prog-lab-status" class="prog-status">BLOQUEADO</span>
+        </div>
+        <div class="progress-item locked" id="prog-comms">
+          <span class="prog-dot"></span> 03 Comunicaciones
+          <span id="prog-comms-status" class="prog-status">BLOQUEADO</span>
+        </div>
+        <div class="progress-item locked" id="prog-engines">
+          <span class="prog-dot"></span> 04 Motores
+          <span id="prog-engines-status" class="prog-status">BLOQUEADO</span>
+        </div>
+        <div class="progress-divider"></div>
+        <div class="progress-title">▸ CALIFICACIÓN</div>
+        <div class="grade-preview" id="grade-preview">— / 10</div>
+        <div class="grade-note">O₂ restante × 10</div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ═══ ESCENA 2: NODO ACTIVO ═══ -->
+  <div id="scene-node" class="scene">
+    <div class="scanlines-global"></div>
+
+    <div class="node-header" id="node-header">
+      <button class="btn-back" onclick="goToMap()">◀ MAPA</button>
+      <div id="node-title-bar" class="node-title-bar">01: PUENTE DE MANDO</div>
+      <div class="node-o2-wrap">
+        <span class="node-o2-label">O₂</span>
+        <div class="node-o2-bar-outer"><div id="node-o2-bar" class="node-o2-bar"></div></div>
+        <span id="node-o2-val" class="node-o2-val">100%</span>
+      </div>
     </div>
 
-    <!-- Modal para leer manuales -->
-    <div id="manual-modal" class="modal">
-        <div class="modal-content-box">
-            <h2 id="modal-title" class="glitch-text"></h2>
-            <div id="modal-content"></div>
-            <button class="btn-close" onclick="closeModal()">[ CERRAR DOCUMENTO ]</button>
+    <div class="node-layout">
+      <!-- Columna izquierda: visor + info -->
+      <aside class="node-left">
+        <div class="node-visor" id="node-visor">
+          <div class="visor-placeholder">
+            <div class="visor-grid"></div>
+            <div class="visor-crosshair"></div>
+          </div>
+          <img id="node-visor-img" src="" alt="Visor" style="display:none">
+          <div class="visor-scanlines"></div>
+          <div id="visor-label" class="visor-label">▶ CÁMARA EN VIVO</div>
         </div>
-    </div>
 
-    <!-- Ruta actualizada al JS en la carpeta assets -->
-    <script src="assets/js/app.js"></script>
+        <div class="node-madre-strip">
+          <div class="madre-mini-avatar">M</div>
+          <div id="node-madre-status" class="node-madre-status">
+            <span class="blink-slow">■</span> SISTEMA ACTIVO
+          </div>
+        </div>
+
+        <div class="node-objectives">
+          <div class="obj-title">▸ OBJETIVOS DEL MÓDULO</div>
+          <ul id="obj-list" class="obj-list"></ul>
+        </div>
+
+        <div class="node-phases">
+          <div class="obj-title">▸ FASES</div>
+          <div class="phases-row">
+            <div id="phase-a" class="phase-pill active">A: Lectura</div>
+            <div id="phase-b" class="phase-pill">B: Práctica</div>
+            <div id="phase-c" class="phase-pill">C: Quiz</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Columna derecha: terminal interactiva -->
+      <section class="node-right">
+        <div id="node-screen" class="node-screen"></div>
+        <div id="node-controls" class="node-controls"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ═══ MODAL: DOCUMENTO / MANUAL ═══ -->
+  <div id="modal-doc" class="modal-overlay" style="display:none">
+    <div class="modal-doc-box" id="modal-doc-box">
+      <div class="modal-doc-header">
+        <div id="modal-doc-title" class="modal-doc-title">DOCUMENTO CLASIFICADO</div>
+        <button class="modal-close-btn" onclick="closeDoc()">✕ CERRAR</button>
+      </div>
+      <div class="modal-doc-stamps">
+        <span class="stamp stamp-red">WEYLAND-YUTANI</span>
+        <span class="stamp stamp-yellow">CONFIDENCIAL</span>
+      </div>
+      <div id="modal-doc-body" class="modal-doc-body"></div>
+    </div>
+  </div>
+
+  <!-- ═══ MODAL: PRÁCTICA GUIADA ═══ -->
+  <div id="modal-practice" class="modal-overlay" style="display:none">
+    <div class="modal-practice-box">
+      <div class="practice-header">
+        <div id="practice-title" class="practice-title">SECUENCIA DE INSTALACIÓN</div>
+        <div class="practice-step-wrap">
+          <span class="practice-step-label">PASO</span>
+          <span id="practice-step-num" class="practice-step-num">1 / 3</span>
+        </div>
+      </div>
+      <div class="practice-progress-wrap">
+        <div id="practice-progress-bar" class="practice-progress-bar"></div>
+      </div>
+      <div id="practice-instruction" class="practice-instruction"></div>
+      <div id="practice-options" class="practice-options"></div>
+      <div id="practice-feedback" class="practice-feedback" style="display:none"></div>
+      <div class="practice-footer">
+        <button class="btn-reread" id="btn-reread" onclick="reopenDoc()">📄 RELEER MANUAL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ MODAL: QUIZ ═══ -->
+  <div id="modal-quiz" class="modal-overlay" style="display:none">
+    <div class="modal-quiz-box">
+      <div class="quiz-header">
+        <div id="quiz-label" class="quiz-label">PROTOCOLO DE VERIFICACIÓN TÉCNICA</div>
+        <div id="quiz-o2" class="quiz-o2">O₂: <span id="quiz-o2-val">100%</span></div>
+      </div>
+      <div class="quiz-progress-wrap">
+        <div id="quiz-progress-bar" class="quiz-progress-bar"></div>
+      </div>
+      <div id="quiz-q-num" class="quiz-q-num">PREGUNTA 1 / 3</div>
+      <div id="quiz-question" class="quiz-question"></div>
+      <div id="quiz-options" class="quiz-options"></div>
+      <div id="quiz-feedback" class="quiz-feedback" style="display:none"></div>
+      <div id="quiz-timer-wrap" class="quiz-timer-wrap" style="display:none">
+        <div class="quiz-timer-label">⏱ TIEMPO RESTANTE</div>
+        <div id="quiz-timer-num" class="quiz-timer-num">60</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ESCENA FINAL ═══ -->
+  <div id="scene-ending" class="scene">
+    <div class="ending-wrap">
+      <div id="ending-flash" class="ending-flash hidden"></div>
+      <div id="ending-content" class="ending-content hidden">
+        <div class="ending-logo">▲ USCSS NOSTROMO — FIN DE LA MISIÓN</div>
+        <div id="ending-text" class="ending-text"></div>
+        <div id="ending-grade" class="ending-grade"></div>
+        <div class="ending-detail" id="ending-detail"></div>
+        <button class="btn-restart" onclick="location.reload()">[ REINICIAR SIMULACIÓN ]</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TOAST DE DAÑO ═══ -->
+  <div id="damage-toast" class="damage-toast" style="display:none">
+    <div class="damage-icon">⚠</div>
+    <div id="damage-msg" class="damage-msg"></div>
+  </div>
+
+  <!-- ═══ GAME OVER ═══ -->
+  <div id="gameover-screen" class="gameover-screen" style="display:none">
+    <div class="gameover-inner">
+      <div class="gameover-alert blink-fast">⚠ ALERTA CRÍTICA ⚠</div>
+      <div class="gameover-title">SOPORTE VITAL TERMINADO</div>
+      <div class="gameover-sub">EL ORGANISMO HA GANADO</div>
+      <div class="gameover-grade">CALIFICACIÓN FINAL: 0 / 10</div>
+      <button onclick="location.reload()">[ REINICIAR SIMULACIÓN ]</button>
+    </div>
+  </div>
+
+  <script src="assets/js/app.js"></script>
 </body>
 </html>
