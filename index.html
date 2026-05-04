@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USCSS Nostromo - Terminal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="crt crt-glitch">
+
+    <!-- Indicador de Nodos (Progreso) -->
+    <div id="node-tracker">
+        <div class="node active" id="node-0">00: INICIO</div>
+        <div class="node" id="node-1">01: PUENTE</div>
+        <div class="node" id="node-2">02: LAB</div>
+        <div class="node" id="node-3">03: COMMS</div>
+        <div class="node" id="node-4">04: MOTORES</div>
+    </div>
+
+    <!-- Terminal Principal -->
+    <div id="terminal" class="terminal-container theme-bridge">
+        <div class="header">
+            <span id="location-tag">INICIANDO CONEXIÓN...</span>
+            <span id="oxygen-meter">O2: 100%</span>
+        </div>
+        
+        <!-- Aquí se inyecta el texto como máquina de escribir -->
+        <div id="screen" class="screen"></div>
+        
+        <!-- Botones de interacción -->
+        <div id="controls" class="controls"></div>
+    </div>
+
+    <!-- Modal para leer manuales -->
+    <div id="manual-modal" class="modal">
+        <div class="modal-content-box">
+            <h2 id="modal-title" class="glitch-text"></h2>
+            <div id="modal-content"></div>
+            <button class="btn-close" onclick="closeModal()">[ CERRAR DOCUMENTO ]</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
