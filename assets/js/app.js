@@ -27,7 +27,17 @@ const scriptData = {
     }
 };
 
-// --- MOTOR DE MÁQUINA DE ESCRIBIR ---
+// --- CONTROLADOR DEL VISOR CENTRAL ---
+function setDisplayImage(imgSrc) {
+    const display = document.getElementById('main-display');
+    const img = document.getElementById('display-img');
+    if(imgSrc) {
+        img.src = imgSrc;
+        display.classList.remove('hidden');
+    } else {
+        display.classList.add('hidden');
+    }
+}
 // --- MOTOR DE MÁQUINA DE ESCRIBIR (ACTUALIZADO CON ANIMACIÓN) ---
 function typeWriter(text, callback) {
     screenEl.innerHTML = '';
@@ -148,12 +158,49 @@ function bridgeQuiz() {
 }
 
 function startLab() {
-    transitionToNode(2, 'theme-lab', scriptData.lab.title, () => {
+    transitionToNode(2, 'theme-lab', "02: EL LABORATORIO", () => {
+        // Encendemos el visor con una imagen (ej. una molécula de ácido o microscopio)
+        setDisplayImage('assets/img/lab_acid.gif'); 
+        
         typeWriter(scriptData.lab.text, () => {
             controlsEl.innerHTML = `
-                <button onclick="openManual('${scriptData.lab.manualTitle}', '${scriptData.lab.manualText}')">[ ABRIR REGISTROS DE ASH ]</button>
-                <!-- Aquí continuarías con las preguntas del lab... -->
+                <button onclick="openManual('${scriptData.lab.manualTitle}', '${scriptData.lab.manualText}')">[ LEER DIARIO DE ASH ]</button>
+                <button onclick="labFaseB()">[ INICIAR INSTALACIÓN LINUX ]</button>
             `;
+        });
+    });
+}
+
+function labFaseB() {
+    // Cambiamos la imagen del visor a una de "código cargando"
+    setDisplayImage('assets/img/linux_boot.gif'); 
+
+    typeWriter("> INICIANDO MODO DE RECUPERACIÓN.\n> Seleccione la arquitectura del Sistema Operativo para este entorno sin recursos:", () => {
+        controlsEl.innerHTML = `
+            <button onclick="takeDamage(15, 'Energía insuficiente. Interfaz gráfica rechazada.')">> Ubuntu Desktop GUI</button>
+            <button onclick="labQuiz()">> Ubuntu Server CLI (Consola)</button>
+        `;
+    });
+}
+
+function labQuiz() {
+    // Tensión máxima: Cambiamos el visor a un radar detectando movimiento
+    setDisplayImage('assets/img/radar_alien.gif'); 
+
+    typeWriter("> INSTALACIÓN BASE COMPLETADA.\n> ALERTA: MOVIMIENTO DETECTADO EN VENTILACIÓN.\n\nPregunta de Validación: ¿Qué comando de Debian/Ubuntu usa para instalar PostgreSQL y leer los datos biológicos?", () => {
+        controlsEl.innerHTML = `
+            <button onclick="startComms()">> sudo apt-get install postgresql</button>
+            <button onclick="takeDamage(20, 'Comando no reconocido. El sistema falló.')">> systemctl start postgresql</button>
+        `;
+    });
+}
+
+// Función temporal para la siguiente parada
+function startComms() {
+    transitionToNode(3, 'theme-comms', "03: COMUNICACIONES", () => {
+        setDisplayImage(''); // Apagamos el visor
+        typeWriter("> ACCESO A COMUNICACIONES CONCEDIDO...\n> [Siguiente nivel en desarrollo]", () => {
+            controlsEl.innerHTML = `<button onclick="location.reload()">[ REINICIAR ]</button>`;
         });
     });
 }

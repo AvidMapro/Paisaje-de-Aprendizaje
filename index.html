@@ -27,10 +27,9 @@
             <span id="oxygen-meter">O2: 100%</span>
         </div>
         
-        <!-- NUEVO: Área del Personaje (IA MADRE) -->
+        <!-- Área del Personaje (IA MADRE) -->
         <div class="character-area">
             <div class="avatar-madre">
-                <!-- Imagen temporal, la cambiaremos luego -->
                 <img src="assets/img/mother_interface.gif" alt="MADRE_IA" onerror="this.style.display='none'">
             </div>
             <div class="status-indicators">
@@ -39,7 +38,13 @@
             </div>
         </div>
         
-        <!-- Aquí se inyecta el texto como máquina de escribir -->
+        <!-- NUEVO: Visor Analítico Central (Para proyectar los GIFs) -->
+        <div id="main-display" class="main-display hidden">
+            <div class="scanlines"></div>
+            <img id="display-img" src="" alt="Visor">
+        </div>
+        
+        <!-- Aquí se inyecta el texto de Madre como máquina de escribir -->
         <div id="screen" class="screen"></div>
         
         <!-- Botones de interacción -->
