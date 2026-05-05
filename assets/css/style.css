@@ -53,10 +53,19 @@ html, body {
   overflow: hidden;
 }
 
+/* Barra superior con botón saltar intro */
+.boot-actions-top {
+  position: absolute;
+  top: 12px; right: 16px;
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+}
+
+/* Contenedor principal boot */
 .boot-container {
   width: 760px;
   max-width: 95vw;
-  /* Alto máximo: deja margen arriba y abajo */
   max-height: 92vh;
   display: flex;
   flex-direction: column;
@@ -74,13 +83,15 @@ html, body {
   100% { filter: brightness(1); }
 }
 
+/* Logo Weyland-Yutani */
+.boot-logo { flex-shrink: 0; margin-bottom: 4px; }
+
 .weyland-logo {
   font-size: 2.2rem;
   letter-spacing: 6px;
   color: var(--c-green);
   text-shadow: 0 0 20px var(--c-green);
   margin-bottom: 4px;
-  flex-shrink: 0;
 }
 .weyland-sub {
   font-size: 1rem;
@@ -88,10 +99,9 @@ html, body {
   color: rgba(0,255,65,0.5);
   margin-bottom: 20px;
   font-family: var(--font-body);
-  flex-shrink: 0;
 }
 
-/* EL FIX CLAVE: el texto del boot tiene scroll y ocupa el espacio disponible */
+/* Texto del boot */
 .boot-text {
   flex: 1;
   overflow-y: auto;
@@ -102,7 +112,6 @@ html, body {
   text-shadow: 0 0 6px var(--c-green);
   padding-right: 6px;
   scroll-behavior: smooth;
-  /* Scrollbar estilo CRT */
   scrollbar-width: thin;
   scrollbar-color: rgba(0,255,65,0.4) transparent;
 }
@@ -110,9 +119,56 @@ html, body {
 .boot-text::-webkit-scrollbar-thumb { background: rgba(0,255,65,0.4); border-radius: 2px; }
 .boot-text::-webkit-scrollbar-track { background: transparent; }
 
+/* Fila inferior del boot: acelerar + botón enter */
+.boot-bottom-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-top: 12px;
+}
+
+/* Botón fantasma (secundario, pequeño) — usado en boot y modales */
+.btn-ghost-action {
+  background: transparent;
+  border: 1px solid rgba(0,255,65,0.3);
+  color: rgba(0,255,65,0.6);
+  font-family: var(--font-main);
+  font-size: 1rem;
+  padding: 6px 14px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: border-color 0.18s, color 0.18s, background 0.18s;
+}
+.btn-ghost-action:hover {
+  border-color: var(--c-green);
+  color: var(--c-green);
+  background: rgba(0,255,65,0.06);
+}
+
+/* Botón secundario de acción — acelerar boot, saltar teoría, saltar práctica */
+.btn-secondary-action {
+  background: transparent;
+  border: 1px solid rgba(0,255,65,0.25);
+  color: rgba(0,255,65,0.55);
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  padding: 6px 14px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: border-color 0.18s, color 0.18s, background 0.18s;
+  text-align: center;
+}
+.btn-secondary-action:hover {
+  border-color: var(--c-amber);
+  color: var(--c-amber);
+  background: rgba(255,176,0,0.05);
+}
+
 .btn-boot {
   display: block; width: 100%;
-  margin-top: 16px; padding: 14px;
+  padding: 14px;
   flex-shrink: 0;
   background: transparent;
   border: 1px solid var(--c-green);
@@ -538,6 +594,14 @@ html, body {
 .node-theme-engines .node-o2-bar,
 .node-theme-engines .o2-bar{ background: var(--c-red); box-shadow: 0 0 6px var(--c-red); }
 
+/* Botones de nodo coloreados por tema */
+.node-theme-lab .btn-back:hover,
+.node-theme-lab .node-controls button:hover { background: var(--c-amber); color: #000; }
+.node-theme-comms .btn-back:hover,
+.node-theme-comms .node-controls button:hover { background: var(--c-cyan); color: #000; }
+.node-theme-engines .btn-back:hover,
+.node-theme-engines .node-controls button:hover { background: var(--c-red); color: #fff; }
+
 /* ===================== MODAL DOCUMENTO ===================== */
 .modal-overlay {
   position: fixed; inset: 0;
@@ -568,6 +632,14 @@ html, body {
   flex-shrink: 0;
 }
 .modal-doc-title { font-size: 1.4rem; letter-spacing: 3px; text-shadow: 0 0 10px currentColor; }
+
+/* Fila de acciones dentro del header del modal doc */
+.modal-doc-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .modal-close-btn {
   background: transparent;
   border: 1px solid var(--c-border);
@@ -648,6 +720,14 @@ html, body {
   border-bottom: 1px solid var(--c-border);
 }
 .practice-title { font-size: 1.3rem; letter-spacing: 3px; text-shadow: 0 0 10px currentColor; }
+
+/* Acciones del header de práctica: botón saltar + número de paso */
+.practice-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .practice-step-wrap { display: flex; align-items: center; gap: 6px; }
 .practice-step-label { font-size: 0.8rem; letter-spacing: 2px; opacity: 0.6; font-family: var(--font-body); }
 .practice-step-num { font-size: 1.2rem; letter-spacing: 2px; }
@@ -694,6 +774,9 @@ html, body {
   padding: 12px 24px;
   border-top: 1px solid var(--c-border);
   background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .btn-reread {
   background: transparent;
@@ -790,7 +873,7 @@ html, body {
 }
 .btn-restart:hover { background: var(--c-green); color: #000; }
 
-/* ===================== TOAST DANIO ===================== */
+/* ===================== TOAST DAÑO ===================== */
 .damage-toast {
   position: fixed;
   top: 20px; left: 50%; transform: translateX(-50%);
@@ -839,7 +922,7 @@ html, body {
 }
 .gameover-screen button:hover { background: var(--c-red); color: #fff; }
 
-/* Overlay de danio en pantalla */
+/* Overlay de daño en pantalla */
 .damage-flash-overlay {
   position: fixed; inset: 0;
   background: rgba(255,0,0,0.12);
