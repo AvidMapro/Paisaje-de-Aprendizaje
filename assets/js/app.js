@@ -13,7 +13,10 @@ let completedNodes = [];
 let lastDocContent = null;
 let lastDocTitle = null;
 
-const TYPE_SPEED = 18; // ms por carácter
+// Control de animación de boot
+let bootSkipped = false;
+let TYPE_SPEED_ACTIVE = 18; // ms por carácter (mutable para acelerar)
+const TYPE_SPEED = 18;      // velocidad normal (referencia)
 
 // --- CONTENIDO DEL GUIÓN ---
 const GUION = {
@@ -490,12 +493,28 @@ function startBoot() {
   const bootText = document.getElementById('boot-text');
   const bootBtn  = document.getElementById('boot-btn');
   if (!bootText) return;
+
+  // Resetear estado de animación
+  bootSkipped = false;
+  TYPE_SPEED_ACTIVE = TYPE_SPEED;
+
   bootText.innerHTML = '';
   bootBtn.classList.add('hidden');
 
   typeInto(bootText, GUION.boot, () => {
-    bootBtn.classList.remove('hidden');
+    if (!bootSkipped) bootBtn.classList.remove('hidden');
   });
+}
+
+// Salta la intro directamente al mapa
+function skipIntro() {
+  bootSkipped = true;
+  goToMap();
+}
+
+// Acelera el texto del boot (sin saltarlo)
+function accelerateBoot() {
+  TYPE_SPEED_ACTIVE = 2;
 }
 
 function goToMap() {
@@ -514,44 +533,41 @@ function updateMapUI() {
   updateGradePreview();
 
   NODE_ORDER.forEach((id, i) => {
-    const badge  = document.getElementById('badge-' + id);
-    const zoneEl = document.getElementById('zone-' + id);
-    const progEl = document.getElementById('prog-' + id);
+    const badge    = document.getElementById('badge-' + id);
+    const zoneEl   = document.getElementById('zone-' + id);
+    const progEl   = document.getElementById('prog-' + id);
     const statusEl = document.getElementById('prog-' + id + '-status');
     const isCompleted = completedNodes.includes(id);
     const isAvailable = i === 0 || completedNodes.includes(NODE_ORDER[i - 1]);
 
     if (badge) {
       if (isCompleted) {
-        badge.textContent = '\u2713 COMPLETADO';
+        badge.textContent = '✓ COMPLETADO';
         badge.className = 'zone-badge done';
       } else if (isAvailable) {
-        badge.textContent = '\u25B6 ACCEDER';
+        badge.textContent = '▶ ACCEDER';
         badge.className = 'zone-badge available';
       } else {
-        badge.textContent = '\uD83D\uDD12 BLOQUEADO';
+        badge.textContent = '🔒 BLOQUEADO';
         badge.className = 'zone-badge locked';
       }
     }
 
     if (zoneEl) {
-      if (!isAvailable && !isCompleted) {
-        zoneEl.classList.add('locked-zone');
-      } else {
-        zoneEl.classList.remove('locked-zone');
-      }
+      if (!isAvailable && !isCompleted) zoneEl.classList.add('locked-zone');
+      else zoneEl.classList.remove('locked-zone');
     }
 
     if (progEl) {
       progEl.classList.remove('locked', 'done');
-      if (isCompleted)      progEl.classList.add('done');
+      if (isCompleted)       progEl.classList.add('done');
       else if (!isAvailable) progEl.classList.add('locked');
     }
 
     if (statusEl) {
-      if (isCompleted)       statusEl.textContent = 'DONE';
-      else if (isAvailable)  statusEl.textContent = 'EN CURSO';
-      else                   statusEl.textContent = 'BLOQUEADO';
+      if (isCompleted)      statusEl.textContent = 'DONE';
+      else if (isAvailable) statusEl.textContent = 'EN CURSO';
+      else                  statusEl.textContent = 'BLOQUEADO';
     }
   });
 }
@@ -581,15 +597,12 @@ function goToScene(id) {
 function enterNode(node) {
   showScene('node');
 
-  // Tema de color
   const nodeScene = document.getElementById('scene-node');
   nodeScene.className = 'scene active ' + node.theme;
 
-  // Titulo
   const titleBar = document.getElementById('node-title-bar');
   if (titleBar) titleBar.textContent = node.title;
 
-  // Visor
   const visorImg   = document.getElementById('node-visor-img');
   const visorLabel = document.getElementById('visor-label');
   if (visorImg && node.visorImg) {
@@ -598,24 +611,17 @@ function enterNode(node) {
   } else if (visorImg) {
     visorImg.style.display = 'none';
   }
-  if (visorLabel) visorLabel.textContent = '\u25B6 ' + node.visorLabel;
+  if (visorLabel) visorLabel.textContent = '▶ ' + node.visorLabel;
 
-  // Estado MADRE
   const madreStatus = document.getElementById('node-madre-status');
-  if (madreStatus) madreStatus.innerHTML = `<span class="blink-slow">\u25A0</span> ${node.madreStatus}`;
+  if (madreStatus) madreStatus.innerHTML = `<span class="blink-slow">■</span> ${node.madreStatus}`;
 
-  // Objetivos
   const objList = document.getElementById('obj-list');
-  if (objList) {
-    objList.innerHTML = node.objectives
-      .map(o => `<li>${o}</li>`).join('');
-  }
+  if (objList) objList.innerHTML = node.objectives.map(o => `<li>${o}</li>`).join('');
 
-  // Fases
   setPhasePill('a');
   updateO2();
 
-  // Llegada
   typeScreen(node.arrival, () => {
     renderControls([
       { label: `[ LEER ${node.docTitle} ]`, action: () => openDoc(node) },
@@ -650,8 +656,6 @@ function openDoc(node) {
   if (!overlay) return;
   title.textContent = node.docTitle;
   body.innerHTML    = node.docContent;
-
-  // color del box segun nodo
   box.style.borderColor = getComputedStyle(document.getElementById('scene-node')).color;
   overlay.style.display = 'flex';
 }
@@ -669,6 +673,12 @@ function reopenDoc() {
   title.textContent = lastDocTitle;
   body.innerHTML    = lastDocContent;
   overlay.style.display = 'flex';
+}
+
+// Cierra el documento e inicia la Fase B directamente (sin esperar al botón)
+function skipTheory() {
+  closeDoc();
+  if (currentNode) startFaseB(currentNode, 0);
 }
 
 // ============================================================
@@ -708,9 +718,7 @@ function showPracticeModal(node, stepIndex) {
 
   titleEl.textContent   = 'PRACTICA — ' + node.title;
   stepNumEl.textContent = `${stepIndex + 1} / ${node.faseB.length}`;
-  const pct = ((stepIndex) / node.faseB.length) * 100;
-  progressEl.style.width = pct + '%';
-
+  progressEl.style.width = ((stepIndex / node.faseB.length) * 100) + '%';
   instrEl.textContent    = step.text;
   feedbackEl.style.display = 'none';
   feedbackEl.className   = 'practice-feedback';
@@ -732,7 +740,6 @@ function handlePracticeAnswer(opt, idx, node, stepIndex) {
   const optionsEl  = document.getElementById('practice-options');
   const feedbackEl = document.getElementById('practice-feedback');
   const btns = optionsEl.querySelectorAll('button');
-
   btns.forEach(b => b.disabled = true);
 
   if (opt.correct) {
@@ -746,7 +753,6 @@ function handlePracticeAnswer(opt, idx, node, stepIndex) {
       if (nextStep < node.faseB.length) {
         showPracticeModal(node, nextStep);
       } else {
-        // Practica completada
         const overlay = document.getElementById('modal-practice');
         if (overlay) overlay.style.display = 'none';
         typeScreen(
@@ -768,6 +774,13 @@ function handlePracticeAnswer(opt, idx, node, stepIndex) {
   }
 }
 
+// Salta toda la Fase B e inicia directamente el Quiz
+function skipPractice() {
+  const overlay = document.getElementById('modal-practice');
+  if (overlay) overlay.style.display = 'none';
+  if (faseBNode) startQuizPhase(faseBNode);
+}
+
 // ============================================================
 // QUIZ
 // ============================================================
@@ -784,9 +797,9 @@ function startQuizPhase(node) {
 }
 
 function openQuiz(node) {
-  const overlay    = document.getElementById('modal-quiz');
-  const labelEl    = document.getElementById('quiz-label');
-  const timerWrap  = document.getElementById('quiz-timer-wrap');
+  const overlay   = document.getElementById('modal-quiz');
+  const labelEl   = document.getElementById('quiz-label');
+  const timerWrap = document.getElementById('quiz-timer-wrap');
 
   labelEl.textContent = 'PROTOCOLO — ' + node.title;
   if (timerWrap) timerWrap.style.display = node.useTimer ? 'flex' : 'none';
@@ -803,7 +816,6 @@ function openQuiz(node) {
   };
 
   renderQuizQuestion();
-
   if (node.useTimer) startQuizTimer();
 }
 
@@ -903,15 +915,12 @@ function nodeSuccess(node) {
         goToScene(node.nextNode);
       }, primary: true }]);
     } else {
-      // ultimo nodo — ir a ending
       renderControls([{ label: '[ EVACUAR EN LA CAPSULA NARCISSUS ]', action: () => showEnding(), primary: true }]);
     }
   });
 }
 
 function updateProgressSidebar() {
-  // se llama desde nodeSuccess, el mapa se actualiza cuando vuelven
-  // actualizar grade preview si el mapa esta visible
   updateGradePreview();
 }
 
@@ -936,10 +945,9 @@ function showEnding() {
     setTimeout(() => {
       flashEl.classList.add('hidden');
       contentEl.classList.remove('hidden');
-
       const grade = Math.max(0, Math.min(10, (oxygen / 100) * 10)).toFixed(1);
-      textEl.textContent  = GUION.ending;
-      gradeEl.textContent = grade + ' / 10';
+      textEl.textContent   = GUION.ending;
+      gradeEl.textContent  = grade + ' / 10';
       detailEl.textContent = `OXIGENO FINAL: ${oxygen}% — MODULOS COMPLETADOS: ${completedNodes.length}/4`;
     }, 800);
   }, 1200);
@@ -955,7 +963,6 @@ function takeDamage(amount, msg) {
   updateO2();
   showDamageToast(msg, amount);
   flashDamage();
-
   if (oxygen <= 0) {
     gameActive = false;
     setTimeout(showGameOver, 800);
@@ -1021,9 +1028,10 @@ function typeInto(el, text, callback, useHtml) {
   const parts = text.split('\n');
   let partIdx = 0, charIdx = 0;
 
-  if (useHtml) el.innerHTML = '';
-
   function tick() {
+    // Respetar bandera de skip solo para el elemento boot-text
+    if (bootSkipped && el.id === 'boot-text') return;
+
     if (partIdx >= parts.length) {
       if (callback) callback();
       return;
@@ -1033,12 +1041,12 @@ function typeInto(el, text, callback, useHtml) {
       el.innerHTML += line.charAt(charIdx);
       charIdx++;
       if (el.scrollTop !== undefined) el.scrollTop = el.scrollHeight;
-      setTimeout(tick, TYPE_SPEED);
+      setTimeout(tick, TYPE_SPEED_ACTIVE);
     } else {
       el.innerHTML += '<br>';
       partIdx++; charIdx = 0;
       if (el.scrollTop !== undefined) el.scrollTop = el.scrollHeight;
-      setTimeout(tick, TYPE_SPEED);
+      setTimeout(tick, TYPE_SPEED_ACTIVE);
     }
   }
   tick();
