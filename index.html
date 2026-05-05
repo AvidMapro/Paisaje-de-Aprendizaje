@@ -6,27 +6,29 @@
   <title>USCSS Nostromo — Paisaje de Aprendizaje</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-  <!-- ═══ ESCENA 0: BOOT ═══ -->
   <div id="scene-boot" class="scene active">
     <div class="scanlines-global"></div>
+    <div class="boot-actions-top">
+      <button id="boot-skip-btn" class="btn-ghost-action" onclick="skipIntro()">⏭ SALTAR INTRO</button>
+    </div>
     <div class="boot-container">
       <div class="boot-logo">
         <div class="weyland-logo">▲ WEYLAND-YUTANI CORP</div>
         <div class="weyland-sub">Building Better Worlds™</div>
       </div>
       <div id="boot-text" class="boot-text"></div>
-      <button id="boot-btn" class="btn-boot hidden" onclick="goToMap()">
-        [ PRESIONA ENTER PARA INICIAR EL RESCATE DEL SISTEMA ]
-      </button>
+      <div class="boot-bottom-actions">
+        <button id="boot-fast-btn" class="btn-secondary-action" onclick="accelerateBoot()">⚡ ACELERAR TEXTO</button>
+        <button id="boot-btn" class="btn-boot hidden" onclick="goToMap()">[ PRESIONA ENTER PARA INICIAR EL RESCATE DEL SISTEMA ]</button>
+      </div>
     </div>
   </div>
 
-  <!-- ═══ ESCENA 1: MAPA ═══ -->
   <div id="scene-map" class="scene">
     <div class="scanlines-global"></div>
 
@@ -47,7 +49,6 @@
     </div>
 
     <div class="map-body">
-      <!-- Panel MADRE -->
       <aside class="madre-side">
         <div class="madre-avatar-wrap">
           <img src="assets/img/mother_interface.gif" alt="MADRE" onerror="this.style.display='none'">
@@ -64,11 +65,9 @@
         </div>
       </aside>
 
-      <!-- Mapa central -->
       <main class="ship-map">
         <div class="map-title">— SELECCIONA UNA ZONA —</div>
         <div class="zones-grid">
-
           <button id="zone-bridge" class="zone-card theme-bridge" onclick="goToScene('bridge')">
             <div class="zone-bg" style="background-image:url('assets/img/zones/bridge_thumb.jpg')"></div>
             <div class="zone-overlay"></div>
@@ -121,29 +120,15 @@
             <span class="zone-corner tl"></span><span class="zone-corner tr"></span>
             <span class="zone-corner bl"></span><span class="zone-corner br"></span>
           </button>
-
         </div>
       </main>
 
-      <!-- Panel de progreso -->
       <aside class="progress-side">
         <div class="progress-title">▸ PROGRESO</div>
-        <div class="progress-item" id="prog-bridge">
-          <span class="prog-dot"></span> 01 Puente
-          <span id="prog-bridge-status" class="prog-status">EN CURSO</span>
-        </div>
-        <div class="progress-item locked" id="prog-lab">
-          <span class="prog-dot"></span> 02 Laboratorio
-          <span id="prog-lab-status" class="prog-status">BLOQUEADO</span>
-        </div>
-        <div class="progress-item locked" id="prog-comms">
-          <span class="prog-dot"></span> 03 Comunicaciones
-          <span id="prog-comms-status" class="prog-status">BLOQUEADO</span>
-        </div>
-        <div class="progress-item locked" id="prog-engines">
-          <span class="prog-dot"></span> 04 Motores
-          <span id="prog-engines-status" class="prog-status">BLOQUEADO</span>
-        </div>
+        <div class="progress-item" id="prog-bridge"><span class="prog-dot"></span> 01 Puente <span id="prog-bridge-status" class="prog-status">EN CURSO</span></div>
+        <div class="progress-item locked" id="prog-lab"><span class="prog-dot"></span> 02 Laboratorio <span id="prog-lab-status" class="prog-status">BLOQUEADO</span></div>
+        <div class="progress-item locked" id="prog-comms"><span class="prog-dot"></span> 03 Comunicaciones <span id="prog-comms-status" class="prog-status">BLOQUEADO</span></div>
+        <div class="progress-item locked" id="prog-engines"><span class="prog-dot"></span> 04 Motores <span id="prog-engines-status" class="prog-status">BLOQUEADO</span></div>
         <div class="progress-divider"></div>
         <div class="progress-title">▸ CALIFICACIÓN</div>
         <div class="grade-preview" id="grade-preview">— / 10</div>
@@ -152,10 +137,8 @@
     </div>
   </div>
 
-  <!-- ═══ ESCENA 2: NODO ACTIVO ═══ -->
   <div id="scene-node" class="scene">
     <div class="scanlines-global"></div>
-
     <div class="node-header" id="node-header">
       <button class="btn-back" onclick="goToMap()">◀ MAPA</button>
       <div id="node-title-bar" class="node-title-bar">01: PUENTE DE MANDO</div>
@@ -167,7 +150,6 @@
     </div>
 
     <div class="node-layout">
-      <!-- Columna izquierda: visor + info -->
       <aside class="node-left">
         <div class="node-visor" id="node-visor">
           <div class="visor-placeholder">
@@ -181,9 +163,7 @@
 
         <div class="node-madre-strip">
           <div class="madre-mini-avatar">M</div>
-          <div id="node-madre-status" class="node-madre-status">
-            <span class="blink-slow">■</span> SISTEMA ACTIVO
-          </div>
+          <div id="node-madre-status" class="node-madre-status"><span class="blink-slow">■</span> SISTEMA ACTIVO</div>
         </div>
 
         <div class="node-objectives">
@@ -201,7 +181,6 @@
         </div>
       </aside>
 
-      <!-- Columna derecha: terminal interactiva -->
       <section class="node-right">
         <div id="node-screen" class="node-screen"></div>
         <div id="node-controls" class="node-controls"></div>
@@ -209,12 +188,14 @@
     </div>
   </div>
 
-  <!-- ═══ MODAL: DOCUMENTO / MANUAL ═══ -->
   <div id="modal-doc" class="modal-overlay" style="display:none">
     <div class="modal-doc-box" id="modal-doc-box">
       <div class="modal-doc-header">
         <div id="modal-doc-title" class="modal-doc-title">DOCUMENTO CLASIFICADO</div>
-        <button class="modal-close-btn" onclick="closeDoc()">✕ CERRAR</button>
+        <div class="modal-doc-actions">
+          <button class="btn-secondary-action" onclick="skipTheory()">⏭ SALTAR TEORÍA</button>
+          <button class="modal-close-btn" onclick="closeDoc()">✕ CERRAR</button>
+        </div>
       </div>
       <div class="modal-doc-stamps">
         <span class="stamp stamp-red">WEYLAND-YUTANI</span>
@@ -224,38 +205,33 @@
     </div>
   </div>
 
-  <!-- ═══ MODAL: PRÁCTICA GUIADA ═══ -->
   <div id="modal-practice" class="modal-overlay" style="display:none">
     <div class="modal-practice-box">
       <div class="practice-header">
         <div id="practice-title" class="practice-title">SECUENCIA DE INSTALACIÓN</div>
-        <div class="practice-step-wrap">
-          <span class="practice-step-label">PASO</span>
-          <span id="practice-step-num" class="practice-step-num">1 / 3</span>
+        <div class="practice-header-actions">
+          <button class="btn-secondary-action" onclick="skipPractice()">⏭ SALTAR</button>
+          <div class="practice-step-wrap"><span class="practice-step-label">PASO</span><span id="practice-step-num" class="practice-step-num">1 / 3</span></div>
         </div>
       </div>
-      <div class="practice-progress-wrap">
-        <div id="practice-progress-bar" class="practice-progress-bar"></div>
-      </div>
+      <div class="practice-progress-wrap"><div id="practice-progress-bar" class="practice-progress-bar"></div></div>
       <div id="practice-instruction" class="practice-instruction"></div>
       <div id="practice-options" class="practice-options"></div>
       <div id="practice-feedback" class="practice-feedback" style="display:none"></div>
       <div class="practice-footer">
         <button class="btn-reread" id="btn-reread" onclick="reopenDoc()">📄 RELEER MANUAL</button>
+        <button class="btn-secondary-action" onclick="skipPractice()">⏭ CONTINUAR</button>
       </div>
     </div>
   </div>
 
-  <!-- ═══ MODAL: QUIZ ═══ -->
   <div id="modal-quiz" class="modal-overlay" style="display:none">
     <div class="modal-quiz-box">
       <div class="quiz-header">
         <div id="quiz-label" class="quiz-label">PROTOCOLO DE VERIFICACIÓN TÉCNICA</div>
         <div id="quiz-o2" class="quiz-o2">O₂: <span id="quiz-o2-val">100%</span></div>
       </div>
-      <div class="quiz-progress-wrap">
-        <div id="quiz-progress-bar" class="quiz-progress-bar"></div>
-      </div>
+      <div class="quiz-progress-wrap"><div id="quiz-progress-bar" class="quiz-progress-bar"></div></div>
       <div id="quiz-q-num" class="quiz-q-num">PREGUNTA 1 / 3</div>
       <div id="quiz-question" class="quiz-question"></div>
       <div id="quiz-options" class="quiz-options"></div>
@@ -267,7 +243,6 @@
     </div>
   </div>
 
-  <!-- ═══ ESCENA FINAL ═══ -->
   <div id="scene-ending" class="scene">
     <div class="ending-wrap">
       <div id="ending-flash" class="ending-flash hidden"></div>
@@ -281,13 +256,11 @@
     </div>
   </div>
 
-  <!-- ═══ TOAST DE DAÑO ═══ -->
   <div id="damage-toast" class="damage-toast" style="display:none">
     <div class="damage-icon">⚠</div>
     <div id="damage-msg" class="damage-msg"></div>
   </div>
 
-  <!-- ═══ GAME OVER ═══ -->
   <div id="gameover-screen" class="gameover-screen" style="display:none">
     <div class="gameover-inner">
       <div class="gameover-alert blink-fast">⚠ ALERTA CRÍTICA ⚠</div>
