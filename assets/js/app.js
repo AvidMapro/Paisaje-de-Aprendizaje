@@ -26,7 +26,7 @@ const TYPE_SPEED = 18;
 // ============================================================
 const NODE_VIDEOS = {
   bridge: {
-    youtubeId: 'REEMPLAZAR_ID_WINDOWS',  // <-- ID del video de instalación Windows Server
+    youtubeId: 'p7YpVl35pac&list=RDp7YpVl35pac&start_radio=1',  // <-- ID del video de instalación Windows Server
     title: 'TRANSMISION INTERCEPTADA — INSTALACION WINDOWS SERVER',
     subtitle: 'Referencia técnica clasificada W-Y · Ver antes de proceder'
   },
