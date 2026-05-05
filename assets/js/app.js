@@ -26,7 +26,7 @@ const TYPE_SPEED = 18;
 // ============================================================
 const NODE_VIDEOS = {
   bridge: {
-    youtubeId: 'p7YpVl35pac&list=RDp7YpVl35pac&start_radio=1',  // <-- ID del video de instalación Windows Server
+    youtubeId: 'p7YpVl35pac',  // <-- Video de instalación Windows Server
     title: 'TRANSMISION INTERCEPTADA — INSTALACION WINDOWS SERVER',
     subtitle: 'Referencia técnica clasificada W-Y · Ver antes de proceder'
   },
@@ -60,7 +60,7 @@ const GUION = {
     bridge: {
       id: 'bridge', num: '01', theme: 'node-theme-bridge',
       title: '01: PUENTE DE MANDO',
-      visorImg: 'assets/img/zones/bridge_thumb.jpg',
+      visorImg: 'assets/img/zones/bridge_thumb.svg',
       visorLabel: 'CAMARA — PUENTE',
       madreStatus: 'MODULO DE WINDOWS SERVER',
       hasVideo: true,
@@ -643,7 +643,6 @@ function enterNode(node) {
     const controls = [
       { label: `[ LEER ${node.docTitle} ]`, action: () => openDoc(node) }
     ];
-    // Si el nodo tiene video, mostrar botón de video antes de la práctica
     if (node.hasVideo) {
       controls.push({ label: '[ ▶ VER VIDEO DE REFERENCIA ]', action: () => openVideoModal(node.id) });
     }
@@ -670,23 +669,23 @@ function openVideoModal(nodeId) {
   const data = NODE_VIDEOS[nodeId];
   if (!data) return;
 
-  const overlay   = document.getElementById('modal-video');
-  const titleEl   = document.getElementById('video-modal-title');
-  const subtitleEl= document.getElementById('video-modal-subtitle');
-  const frameWrap = document.getElementById('video-frame-wrap');
+  const overlay    = document.getElementById('modal-video');
+  const titleEl    = document.getElementById('video-modal-title');
+  const subtitleEl = document.getElementById('video-modal-subtitle');
+  const frameWrap  = document.getElementById('video-frame-wrap');
 
   if (!overlay) return;
 
   titleEl.textContent    = data.title;
   subtitleEl.textContent = data.subtitle;
 
-  // Construir iframe — si el ID es el placeholder mostramos aviso
-  if (data.youtubeId.startsWith('REEMPLAZAR')) {
+  if (!data.youtubeId || data.youtubeId.startsWith('REEMPLAZAR')) {
     frameWrap.innerHTML =
-      '<div class="video-placeholder-msg">' +
-      '<div class="video-placeholder-icon">▶</div>' +
-      '<div>VIDEO PENDIENTE DE CONFIGURACIÓN</div>' +
-      '<div class="video-placeholder-sub">Reemplaza el youtubeId en NODE_VIDEOS dentro de app.js</div>' +
+      '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;' +
+      'height:100%;gap:16px;color:rgba(0,255,65,0.5);font-family:monospace;text-align:center;padding:20px">' +
+      '<div style="font-size:3rem">▶</div>' +
+      '<div style="letter-spacing:3px">VIDEO PENDIENTE DE CONFIGURACIÓN</div>' +
+      '<div style="font-size:0.85rem;opacity:0.6">Reemplaza el youtubeId en NODE_VIDEOS dentro de app.js</div>' +
       '</div>';
   } else {
     frameWrap.innerHTML =
@@ -705,7 +704,6 @@ function closeVideoModal() {
   const overlay   = document.getElementById('modal-video');
   const frameWrap = document.getElementById('video-frame-wrap');
   if (overlay)   overlay.style.display = 'none';
-  // Destruir iframe para detener reproducción al cerrar
   if (frameWrap) frameWrap.innerHTML = '';
 }
 
