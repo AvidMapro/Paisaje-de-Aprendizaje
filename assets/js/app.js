@@ -15,8 +15,27 @@ let lastDocTitle = null;
 
 // Control de animación de boot
 let bootSkipped = false;
-let TYPE_SPEED_ACTIVE = 18; // ms por carácter (mutable para acelerar)
-const TYPE_SPEED = 18;      // velocidad normal (referencia)
+let TYPE_SPEED_ACTIVE = 18;
+const TYPE_SPEED = 18;
+
+// ============================================================
+// VIDEOS DE REFERENCIA POR NODO
+// Reemplaza el valor de 'youtubeId' con el ID real del video.
+// Ejemplo: si la URL es https://www.youtube.com/watch?v=dQw4w9WgXcQ
+// entonces youtubeId = 'dQw4w9WgXcQ'
+// ============================================================
+const NODE_VIDEOS = {
+  bridge: {
+    youtubeId: 'REEMPLAZAR_ID_WINDOWS',  // <-- ID del video de instalación Windows Server
+    title: 'TRANSMISION INTERCEPTADA — INSTALACION WINDOWS SERVER',
+    subtitle: 'Referencia técnica clasificada W-Y · Ver antes de proceder'
+  },
+  lab: {
+    youtubeId: 'REEMPLAZAR_ID_LINUX',    // <-- ID del video de instalación Ubuntu Server
+    title: 'TRANSMISION INTERCEPTADA — INSTALACION UBUNTU SERVER',
+    subtitle: 'Diario recuperado de Ash · Ver antes de proceder'
+  }
+};
 
 // --- CONTENIDO DEL GUIÓN ---
 const GUION = {
@@ -44,6 +63,7 @@ const GUION = {
       visorImg: 'assets/img/zones/bridge_thumb.jpg',
       visorLabel: 'CAMARA — PUENTE',
       madreStatus: 'MODULO DE WINDOWS SERVER',
+      hasVideo: true,
       objectives: [
         'Instalar Windows Server con Desktop Experience',
         'Configurar particionado de discos (C: / D:)',
@@ -156,6 +176,7 @@ const GUION = {
       visorImg: 'assets/img/lab_acid.gif',
       visorLabel: 'CAMARA — LABORATORIO',
       madreStatus: 'MODULO DE LINUX SERVER',
+      hasVideo: true,
       objectives: [
         'Instalar Ubuntu Server CLI (sin GUI)',
         'Instalar PostgreSQL con apt-get',
@@ -254,6 +275,7 @@ const GUION = {
       visorImg: 'assets/img/radar_alien.gif',
       visorLabel: 'RADAR — SECTOR COMMS',
       madreStatus: 'MODULO DE RED Y FIREWALL',
+      hasVideo: false,
       objectives: [
         'Instalar Servidor Web (IIS o Apache)',
         'Habilitar puerto TCP 443 (Outbound) para S.O.S.',
@@ -365,6 +387,7 @@ const GUION = {
       visorImg: 'assets/img/mother_interface.gif',
       visorLabel: 'NUCLEO — SALA DE MAQUINAS',
       madreStatus: 'MODULO DE SCRIPTS Y BACKUPS',
+      hasVideo: false,
       objectives: [
         'Comprimir datos con tar para la cápsula Narcissus',
         'Automatizar script con crontab / Task Scheduler',
@@ -493,26 +516,20 @@ function startBoot() {
   const bootText = document.getElementById('boot-text');
   const bootBtn  = document.getElementById('boot-btn');
   if (!bootText) return;
-
-  // Resetear estado de animación
   bootSkipped = false;
   TYPE_SPEED_ACTIVE = TYPE_SPEED;
-
   bootText.innerHTML = '';
   bootBtn.classList.add('hidden');
-
   typeInto(bootText, GUION.boot, () => {
     if (!bootSkipped) bootBtn.classList.remove('hidden');
   });
 }
 
-// Salta la intro directamente al mapa
 function skipIntro() {
   bootSkipped = true;
   goToMap();
 }
 
-// Acelera el texto del boot (sin saltarlo)
 function accelerateBoot() {
   TYPE_SPEED_ACTIVE = 2;
 }
@@ -623,10 +640,15 @@ function enterNode(node) {
   updateO2();
 
   typeScreen(node.arrival, () => {
-    renderControls([
-      { label: `[ LEER ${node.docTitle} ]`, action: () => openDoc(node) },
-      { label: '[ INICIAR PRACTICA GUIADA ]', action: () => startFaseB(node, 0), primary: true }
-    ]);
+    const controls = [
+      { label: `[ LEER ${node.docTitle} ]`, action: () => openDoc(node) }
+    ];
+    // Si el nodo tiene video, mostrar botón de video antes de la práctica
+    if (node.hasVideo) {
+      controls.push({ label: '[ ▶ VER VIDEO DE REFERENCIA ]', action: () => openVideoModal(node.id) });
+    }
+    controls.push({ label: '[ INICIAR PRACTICA GUIADA ]', action: () => startFaseB(node, 0), primary: true });
+    renderControls(controls);
   });
 }
 
@@ -638,6 +660,53 @@ function setPhasePill(phase) {
     if (p === phase) el.classList.add('active');
     else if (p < phase) el.classList.add('done');
   });
+}
+
+// ============================================================
+// MODAL VIDEO YOUTUBE
+// ============================================================
+
+function openVideoModal(nodeId) {
+  const data = NODE_VIDEOS[nodeId];
+  if (!data) return;
+
+  const overlay   = document.getElementById('modal-video');
+  const titleEl   = document.getElementById('video-modal-title');
+  const subtitleEl= document.getElementById('video-modal-subtitle');
+  const frameWrap = document.getElementById('video-frame-wrap');
+
+  if (!overlay) return;
+
+  titleEl.textContent    = data.title;
+  subtitleEl.textContent = data.subtitle;
+
+  // Construir iframe — si el ID es el placeholder mostramos aviso
+  if (data.youtubeId.startsWith('REEMPLAZAR')) {
+    frameWrap.innerHTML =
+      '<div class="video-placeholder-msg">' +
+      '<div class="video-placeholder-icon">▶</div>' +
+      '<div>VIDEO PENDIENTE DE CONFIGURACIÓN</div>' +
+      '<div class="video-placeholder-sub">Reemplaza el youtubeId en NODE_VIDEOS dentro de app.js</div>' +
+      '</div>';
+  } else {
+    frameWrap.innerHTML =
+      `<iframe
+        src="https://www.youtube.com/embed/${data.youtubeId}?rel=0&modestbranding=1"
+        title="${data.title}"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>`;
+  }
+
+  overlay.style.display = 'flex';
+}
+
+function closeVideoModal() {
+  const overlay   = document.getElementById('modal-video');
+  const frameWrap = document.getElementById('video-frame-wrap');
+  if (overlay)   overlay.style.display = 'none';
+  // Destruir iframe para detener reproducción al cerrar
+  if (frameWrap) frameWrap.innerHTML = '';
 }
 
 // ============================================================
@@ -675,7 +744,6 @@ function reopenDoc() {
   overlay.style.display = 'flex';
 }
 
-// Cierra el documento e inicia la Fase B directamente (sin esperar al botón)
 function skipTheory() {
   closeDoc();
   if (currentNode) startFaseB(currentNode, 0);
@@ -774,7 +842,6 @@ function handlePracticeAnswer(opt, idx, node, stepIndex) {
   }
 }
 
-// Salta toda la Fase B e inicia directamente el Quiz
 function skipPractice() {
   const overlay = document.getElementById('modal-practice');
   if (overlay) overlay.style.display = 'none';
@@ -1029,9 +1096,7 @@ function typeInto(el, text, callback, useHtml) {
   let partIdx = 0, charIdx = 0;
 
   function tick() {
-    // Respetar bandera de skip solo para el elemento boot-text
     if (bootSkipped && el.id === 'boot-text') return;
-
     if (partIdx >= parts.length) {
       if (callback) callback();
       return;
