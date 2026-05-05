@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220" width="400" height="220">
+  <rect width="400" height="220" fill="#000a0d"/>
+  <defs>
+    <pattern id="grid3" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(0,229,255,0.06)" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="400" height="220" fill="url(#grid3)"/>
+  <!-- Antena de radar central -->
+  <line x1="200" y1="200" x2="200" y2="40" stroke="rgba(0,229,255,0.5)" stroke-width="2"/>
+  <line x1="200" y1="40" x2="180" y2="60" stroke="rgba(0,229,255,0.4)" stroke-width="1.5"/>
+  <line x1="200" y1="40" x2="220" y2="60" stroke="rgba(0,229,255,0.4)" stroke-width="1.5"/>
+  <line x1="200" y1="55" x2="150" y2="70" stroke="rgba(0,229,255,0.3)" stroke-width="1"/>
+  <line x1="200" y1="55" x2="250" y2="70" stroke="rgba(0,229,255,0.3)" stroke-width="1"/>
+  <!-- Círculos de radar -->
+  <circle cx="200" cy="130" r="90" fill="none" stroke="rgba(0,229,255,0.12)" stroke-width="1"/>
+  <circle cx="200" cy="130" r="65" fill="none" stroke="rgba(0,229,255,0.15)" stroke-width="1"/>
+  <circle cx="200" cy="130" r="40" fill="none" stroke="rgba(0,229,255,0.2)" stroke-width="1"/>
+  <circle cx="200" cy="130" r="18" fill="none" stroke="rgba(0,229,255,0.3)" stroke-width="1"/>
+  <!-- Líneas cruzadas del radar -->
+  <line x1="110" y1="130" x2="290" y2="130" stroke="rgba(0,229,255,0.1)" stroke-width="0.5"/>
+  <line x1="200" y1="40" x2="200" y2="220" stroke="rgba(0,229,255,0.1)" stroke-width="0.5"/>
+  <!-- Barrido del radar (sector) -->
+  <path d="M200,130 L260,80 A90,90 0 0,1 278,160 Z" fill="rgba(0,229,255,0.06)"/>
+  <!-- Puntos de contacto -->
+  <circle cx="245" cy="95" r="3" fill="rgba(0,229,255,0.9)"/>
+  <circle cx="245" cy="95" r="6" fill="none" stroke="rgba(0,229,255,0.5)" stroke-width="0.5"/>
+  <circle cx="152" cy="110" r="2" fill="rgba(255,34,68,0.8)"/>
+  <circle cx="152" cy="110" r="5" fill="none" stroke="rgba(255,34,68,0.4)" stroke-width="0.5"/>
+  <!-- Panel izquierdo: Firewall -->
+  <rect x="15" y="40" width="120" height="120" rx="2" fill="rgba(0,229,255,0.03)" stroke="rgba(0,229,255,0.3)" stroke-width="0.5"/>
+  <text x="20" y="52" font-family="monospace" font-size="6" fill="rgba(0,229,255,0.5)" letter-spacing="1">FIREWALL STATUS</text>
+  <line x1="15" y1="55" x2="135" y2="55" stroke="rgba(0,229,255,0.2)" stroke-width="0.5"/>
+  <text x="20" y="67" font-family="monospace" font-size="6" fill="rgba(0,229,255,0.4)">PORT 80  (HTTP)</text>
+  <text x="110" y="67" font-family="monospace" font-size="6" fill="rgba(0,255,65,0.7)">OPEN</text>
+  <text x="20" y="77" font-family="monospace" font-size="6" fill="rgba(0,229,255,0.4)">PORT 443 (HTTPS)</text>
+  <text x="105" y="77" font-family="monospace" font-size="6" fill="rgba(255,34,68,0.7)">BLOCK</text>
+  <text x="20" y="87" font-family="monospace" font-size="6" fill="rgba(0,229,255,0.4)">PORT 22  (SSH)</text>
+  <text x="105" y="87" font-family="monospace" font-size="6" fill="rgba(0,255,65,0.7)">OPEN</text>
+  <text x="20" y="97" font-family="monospace" font-size="6" fill="rgba(0,229,255,0.4)">PORT 3389 (RDP)</text>
+  <text x="105" y="97" font-family="monospace" font-size="6" fill="rgba(0,255,65,0.7)">OPEN</text>
+  <line x1="15" y1="103" x2="135" y2="103" stroke="rgba(255,34,68,0.3)" stroke-width="0.5"/>
+  <text x="20" y="115" font-family="monospace" font-size="6" fill="rgba(255,34,68,0.7)">⚠ INTRUSION DETECTED</text>
+  <text x="20" y="125" font-family="monospace" font-size="6" fill="rgba(255,34,68,0.5)">SRC: WEYLAND-YUTANI</text>
+  <text x="20" y="135" font-family="monospace" font-size="6" fill="rgba(255,34,68,0.5)">TAKEOVER: 67%</text>
+  <!-- Panel derecho: S.O.S. -->
+  <rect x="265" y="40" width="120" height="90" rx="2" fill="rgba(0,229,255,0.03)" stroke="rgba(0,229,255,0.3)" stroke-width="0.5"/>
+  <text x="270" y="52" font-family="monospace" font-size="6" fill="rgba(0,229,255,0.5)" letter-spacing="1">TRANSMISION S.O.S.</text>
+  <line x1="265" y1="55" x2="385" y2="55" stroke="rgba(0,229,255,0.2)" stroke-width="0.5"/>
+  <text x="270" y="67" font-family="monospace" font-size="6" fill="rgba(0,229,255,0.4)">DESTINO: TIERRA</text>
+  <text x="270" y="77" font-family="monospace" font-size="6" fill="rgba(0,229,255,0.4)">PROTOCOLO: HTTPS</text>
+  <text x="270" y="87" font-family="monospace" font-size="6" fill="rgba(255,34,68,0.6)">CANAL: BLOQUEADO</text>
+  <text x="270" y="97" font-family="monospace" font-size="6" fill="rgba(255,34,68,0.5)">IIS/APACHE: OFFLINE</text>
+  <text x="270" y="107" font-family="monospace" font-size="6" fill="rgba(255,176,0,0.6)">REQUIERE: RESTAURAR</text>
+  <!-- Título -->
+  <text x="200" y="14" font-family="monospace" font-size="8" fill="rgba(0,229,255,0.5)" text-anchor="middle" letter-spacing="3">COMUNICACIONES — SECTOR C</text>
+  <!-- LED -->
+  <circle cx="375" cy="25" r="4" fill="rgba(0,229,255,0.7)"/>
+  <circle cx="375" cy="25" r="2" fill="rgba(0,229,255,1)"/>
+</svg>

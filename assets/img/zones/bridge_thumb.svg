@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220" width="400" height="220">
+  <rect width="400" height="220" fill="#010a01"/>
+  <!-- Grid de fondo -->
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(0,255,65,0.07)" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="400" height="220" fill="url(#grid)"/>
+  <!-- Pantallas de consola -->
+  <rect x="30" y="30" width="80" height="50" rx="2" fill="none" stroke="rgba(0,255,65,0.4)" stroke-width="1"/>
+  <rect x="32" y="32" width="76" height="46" fill="rgba(0,255,65,0.05)"/>
+  <line x1="32" y1="40" x2="108" y2="40" stroke="rgba(0,255,65,0.2)" stroke-width="0.5"/>
+  <rect x="35" y="44" width="40" height="2" rx="1" fill="rgba(0,255,65,0.3)"/>
+  <rect x="35" y="50" width="60" height="2" rx="1" fill="rgba(0,255,65,0.2)"/>
+  <rect x="35" y="56" width="30" height="2" rx="1" fill="rgba(0,255,65,0.15)"/>
+  <rect x="35" y="62" width="50" height="2" rx="1" fill="rgba(0,255,65,0.2)"/>
+  <rect x="35" y="68" width="20" height="2" rx="1" fill="rgba(0,255,65,0.3)"/>
+  <!-- Segunda consola -->
+  <rect x="160" y="20" width="100" height="70" rx="2" fill="none" stroke="rgba(0,255,65,0.5)" stroke-width="1"/>
+  <rect x="162" y="22" width="96" height="66" fill="rgba(0,255,65,0.04)"/>
+  <line x1="162" y1="32" x2="258" y2="32" stroke="rgba(0,255,65,0.25)" stroke-width="0.5"/>
+  <text x="170" y="44" font-family="monospace" font-size="7" fill="rgba(0,255,65,0.6)">AD DS CONTROLLER</text>
+  <text x="170" y="54" font-family="monospace" font-size="6" fill="rgba(0,255,65,0.4)">DOMAIN: NOSTROMO.CORP</text>
+  <text x="170" y="63" font-family="monospace" font-size="6" fill="rgba(0,255,65,0.3)">STATUS: OFFLINE</text>
+  <text x="170" y="72" font-family="monospace" font-size="6" fill="rgba(0,255,65,0.5)">USERS: 0/7 ACTIVE</text>
+  <!-- Tercera consola -->
+  <rect x="300" y="30" width="75" height="50" rx="2" fill="none" stroke="rgba(0,255,65,0.3)" stroke-width="1"/>
+  <rect x="302" y="32" width="71" height="46" fill="rgba(0,255,65,0.03)"/>
+  <rect x="305" y="42" width="35" height="2" rx="1" fill="rgba(0,255,65,0.25)"/>
+  <rect x="305" y="48" width="55" height="2" rx="1" fill="rgba(0,255,65,0.15)"/>
+  <rect x="305" y="54" width="25" height="2" rx="1" fill="rgba(0,255,65,0.2)"/>
+  <!-- Panel principal grande -->
+  <rect x="20" y="110" width="360" height="90" rx="2" fill="none" stroke="rgba(0,255,65,0.35)" stroke-width="1"/>
+  <rect x="22" y="112" width="356" height="86" fill="rgba(0,255,65,0.02)"/>
+  <!-- Barras de estado horizontales -->
+  <rect x="30" y="125" width="340" height="1" fill="rgba(0,255,65,0.1)"/>
+  <text x="30" y="123" font-family="monospace" font-size="6" fill="rgba(0,255,65,0.4)">SISTEMA OPERATIVO</text>
+  <rect x="30" y="132" width="200" height="6" rx="1" fill="rgba(0,255,65,0.08)" stroke="rgba(0,255,65,0.2)" stroke-width="0.5"/>
+  <rect x="30" y="132" width="0" height="6" rx="1" fill="rgba(0,255,65,0.4)"/>
+  <text x="240" y="138" font-family="monospace" font-size="6" fill="rgba(0,255,65,0.5)">NOT INSTALLED</text>
+  <text x="30" y="150" font-family="monospace" font-size="6" fill="rgba(0,255,65,0.4)">ACTIVE DIRECTORY</text>
+  <rect x="30" y="154" width="200" height="6" rx="1" fill="rgba(0,255,65,0.08)" stroke="rgba(0,255,65,0.2)" stroke-width="0.5"/>
+  <text x="240" y="160" font-family="monospace" font-size="6" fill="rgba(255,34,68,0.8)">CRITICAL FAILURE</text>
+  <text x="30" y="172" font-family="monospace" font-size="6" fill="rgba(0,255,65,0.4)">DOMAIN CONTROLLER</text>
+  <rect x="30" y="176" width="200" height="6" rx="1" fill="rgba(0,255,65,0.08)" stroke="rgba(0,255,65,0.2)" stroke-width="0.5"/>
+  <text x="240" y="182" font-family="monospace" font-size="6" fill="rgba(255,34,68,0.7)">OFFLINE</text>
+  <!-- Esquinas decorativas -->
+  <polyline points="20,110 20,100 30,100" fill="none" stroke="rgba(0,255,65,0.5)" stroke-width="1"/>
+  <polyline points="380,110 380,100 370,100" fill="none" stroke="rgba(0,255,65,0.5)" stroke-width="1"/>
+  <!-- Texto W-Y arriba -->
+  <text x="200" y="14" font-family="monospace" font-size="8" fill="rgba(0,255,65,0.5)" text-anchor="middle" letter-spacing="4">PUENTE DE MANDO — SECTOR A</text>
+  <!-- Punto pulsante -->
+  <circle cx="375" cy="25" r="4" fill="rgba(255,34,68,0.7)"/>
+  <circle cx="375" cy="25" r="2" fill="rgba(255,34,68,1)"/>
+</svg>
