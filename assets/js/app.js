@@ -31,7 +31,7 @@ const NODE_VIDEOS = {
     subtitle: 'Referencia técnica clasificada W-Y · Ver antes de proceder'
   },
   lab: {
-    youtubeId: 'REEMPLAZAR_ID_LINUX',    // <-- ID del video de instalación Ubuntu Server
+    youtubeId: 'p7YpVl35pac',    // <-- ID del video de instalación Ubuntu Server
     title: 'TRANSMISION INTERCEPTADA — INSTALACION UBUNTU SERVER',
     subtitle: 'Diario recuperado de Ash · Ver antes de proceder'
   }
