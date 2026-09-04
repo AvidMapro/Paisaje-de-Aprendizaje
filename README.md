@@ -1,48 +1,50 @@
-# Paisaje de Aprendizaje — USCSS Nostromo
+# Paisaje de Aprendizaje USCSS Nostromo
 
-> **Infraestructura de Servidores** — Experiencia de aprendizaje gamificada con temática de *Alien* (1979).
+Experiencia web gamificada para estudiar infraestructura de servidores con una ambientación inspirada en *Alien* (1979). El estudiante recorre cuatro nodos, completa actividades y responde evaluaciones mientras administra un indicador de oxígeno.
 
-## Descripción
+> Este repositorio es un fork y corresponde a un trabajo colaborativo, no a un proyecto individual de Anthony Manangón. El repositorio de origen es [ZamirAndres19/Paisaje-de-Aprendizaje](https://github.com/ZamirAndres19/Paisaje-de-Aprendizaje).
 
-El estudiante es un tripulante de la USCSS Nostromo que debe restaurar los sistemas informáticos de la nave antes de que el soporte vital se agote. Guiado por la IA **MADRE (MU/TH/UR 6000)**, recorre 4 nodos temáticos que cubren contenidos reales de infraestructura de servidores.
+## Demostración
 
-Cada error en los quizzes resta oxígeno. El porcentaje de O₂ restante al final se traduce en la calificación.
+[Abrir la versión desplegada en Firebase Hosting](https://paisaje-de-aprendizaje-grupo3.web.app)
 
-## Nodos de Aprendizaje
+## Contenido académico
 
-| Nodo | Ubicación | Tema |
-|------|-----------|------|
-| 01 | Puente de Mando | Windows Server + Active Directory |
-| 02 | Laboratorio Científico | Linux Server + PostgreSQL |
-| 03 | Sala de Comunicaciones | Servidores Web + Puertos + Firewall |
-| 04 | Sala de Máquinas | Scripts Bash/PowerShell + Backups |
+| Nodo | Tema |
+| --- | --- |
+| Puente de mando | Windows Server y Active Directory |
+| Laboratorio científico | Linux Server y PostgreSQL |
+| Sala de comunicaciones | Servidores web, puertos y firewalls |
+| Sala de máquinas | Automatización y respaldos con Bash y PowerShell |
 
-## Mecánica de Juego
+Cada nodo combina lectura, práctica guiada y un quiz. La calificación final se calcula a partir del oxígeno restante después de los intentos.
 
-- **Fase A (Lectura):** El estudiante lee un documento temático con la teoría del módulo.
-- **Fase B (Práctica):** Micro-interacciones guiadas que simulan la instalación/configuración. Los errores no restan oxígeno.
-- **Quiz Final:** 3 preguntas de evaluación. Cada fallo resta 15-20% de oxígeno.
-- **Pantalla Final:** Calificación calculada a partir del oxígeno restante (100% O₂ = 10/10).
+## Tecnologías verificadas
 
-## Stack Técnico
+- HTML
+- CSS
+- JavaScript sin frameworks
+- Firebase Hosting
 
-- Frontend estático: HTML + CSS + JavaScript vanilla
-- Hosting: Firebase Hosting
-- Sin dependencias externas de frameworks
+Los temas de Windows Server, Linux Server, PostgreSQL, firewalls y automatización forman parte del contenido educativo; no son servicios de backend implementados por la aplicación.
 
-## Estructura del Proyecto
+## Estructura
 
-```
-├── index.html          # Terminal interactiva principal
-├── assets/
-│   ├── css/style.css   # Estilos retro CRT / tema Alien
-│   ├── js/app.js       # Lógica completa del juego
-│   └── img/            # GIFs e imágenes temáticas
-├── public/             # Archivos de Firebase Hosting
-├── firebase.json       # Configuración de hosting
-└── .firebaserc         # Proyecto Firebase
+```text
+index.html          Aplicación principal
+assets/css/         Estilos y efectos visuales
+assets/js/app.js    Navegación, actividades y evaluación
+assets/img/         Recursos gráficos
+public/             Salida para Firebase Hosting
+firebase.json       Configuración de despliegue
 ```
 
-## Equipo
+## Ejecución local
 
-Proyecto académico de Infraestructura — Universidad.
+Al ser un sitio estático, puede abrirse con cualquier servidor HTTP local. Por ejemplo:
+
+```bash
+python3 -m http.server 8000
+```
+
+Luego visita `http://localhost:8000`.
